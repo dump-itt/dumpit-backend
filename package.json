@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "1.2.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "2.4.2",
     "@types/fastify-cors": "^2.1.0",
     "@types/mime": "^3.0.1",
@@ -31,6 +32,7 @@
     "@fastify/cors": "^8.3.0",
     "@fastify/jwt": "6.7.0",
     "@prisma/client": "4.10.1",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "2.4.3",
     "dotenv": "^16.3.1",
     "fastify": "4.13.0",

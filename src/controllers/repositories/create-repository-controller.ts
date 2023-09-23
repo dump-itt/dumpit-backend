@@ -1,13 +1,22 @@
-import { CreateRepositoryUseCase } from '@/use-cases/repositories/create-repository'
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { CreateRepositoryUseCase } from "@/use-cases/repositories/create-repository";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function createRepositoryController(
   req: FastifyRequest,
-  reply: FastifyReply,
+  reply: FastifyReply
 ) {
-  const useCase = new CreateRepositoryUseCase()
+  try {
+    const { accessPassword, editPassword } = req.body as any;
 
-  const { repository } = await useCase.execute()
+    const useCase = new CreateRepositoryUseCase();
 
-  return reply.status(200).send(repository)
+    const { repository } = await useCase.execute({
+      accessPassword,
+      editPassword,
+    });
+
+    return reply.status(200).send(repository);
+  } catch (error) {
+    return reply.status(500).send("Erro ao criar repositório");
+  }
 }
