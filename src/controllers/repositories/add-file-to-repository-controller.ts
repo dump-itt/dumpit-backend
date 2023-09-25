@@ -12,7 +12,15 @@ export async function addFileToRepositoryController(
 
   const useCase = new AddFileToRepositoryUseCase()
 
-  const { file: _file } = await useCase.execute({ id, file })
+  console.log(req.repo)
+
+  const { file: _file } = await useCase.execute({
+    id,
+    file,
+    sub: req.repo?.sub,
+    canAccess: req.repo?.canAccess,
+    canEdit: req.repo?.canEdit,
+  })
 
   return reply.status(200).send({ file: _file })
 }

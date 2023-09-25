@@ -1,37 +1,40 @@
-import { prisma } from "@/lib/prisma";
-import { generateRandomString } from "@/utils/generate-random-string";
-import { hashPassword } from "@/utils/hash";
+import { prisma } from '@/lib/prisma'
+import { generateRandomString } from '@/utils/generate-random-string'
+import { hashPassword } from '@/utils/hash'
 
 type CreateRepositoryRequest = {
-  accessPassword: string;
-  editPassword: string;
-};
+  accessPassword?: string
+  editPassword?: string
+}
 
 type CreateRepositoryResponse = {
   repository: {
-    id: string;
-  };
-};
+    id: string
+    createdAt: Date
+  }
+}
 
 export class CreateRepositoryUseCase {
   async execute(
-    data: CreateRepositoryRequest
+    data: CreateRepositoryRequest,
   ): Promise<CreateRepositoryResponse> {
-    const id = generateRandomString(5);
-
-    const hashedAccessPassword = await hashPassword(data.accessPassword);
-    const hashedEditPassword = await hashPassword(data.editPassword);
+    const id = generateRandomString(5)
 
     const repository = await prisma.repository.create({
       data: {
         id,
-        accessPassword: hashedAccessPassword,
-        editPassword: hashedEditPassword,
+        accessPassword:
+          data.accessPassword && (await hashPassword(data.accessPassword)),
+        editPassword:
+          data.editPassword && (await hashPassword(data.editPassword)),
       },
-    });
+    })
 
     return {
-      repository,
-    };
+      repository: {
+        id: repository.id,
+        createdAt: repository.createdAt,
+      },
+    }
   }
 }

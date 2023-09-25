@@ -9,7 +9,12 @@ export async function deleteFileController(
 
   const useCase = new DeleteFileUseCase()
 
-  await useCase.execute({ id })
+  await useCase.execute({
+    id,
+    sub: req.repo?.sub,
+    canAccess: req.repo?.canAccess,
+    canEdit: req.repo?.canEdit,
+  })
 
   return reply.status(204).send()
 }

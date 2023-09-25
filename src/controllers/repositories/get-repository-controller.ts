@@ -9,7 +9,14 @@ export async function getRepositoryController(
 
   const useCase = new GetRepositoryUseCase()
 
-  const { repository } = await useCase.execute({ id })
+  console.log(req.repo)
+
+  const { repository } = await useCase.execute({
+    id,
+    sub: req.repo?.sub,
+    canAccess: req.repo?.canAccess,
+    canEdit: req.repo?.canEdit,
+  })
 
   return reply.status(200).send(repository)
 }

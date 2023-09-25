@@ -1,8 +1,9 @@
-import { ResourceNotFoundError } from '@/errors/AppError'
+import { ResourceNotFoundError, UnauthorizedError } from '@/errors/AppError'
 import { prisma } from '@/lib/prisma'
 import { Repository } from '@prisma/client'
+import { AuthUseCaseRequest } from '../utils/auth-use-case-request'
 
-type GetRepositoryRequest = {
+interface GetRepositoryRequest extends AuthUseCaseRequest {
   id: string
 }
 
@@ -11,8 +12,12 @@ type GetRepositoryResponse = {
 }
 
 export class GetRepositoryUseCase {
-  async execute({ id }: GetRepositoryRequest): Promise<GetRepositoryResponse> {
-    const repository = await prisma.repository.findUnique({
+  async execute({
+    id,
+    sub,
+    canAccess,
+  }: GetRepositoryRequest): Promise<GetRepositoryResponse> {
+    const repo = await prisma.repository.findUnique({
       where: {
         id,
       },
@@ -21,12 +26,16 @@ export class GetRepositoryUseCase {
       },
     })
 
-    if (!repository) {
+    if (!repo) {
       throw ResourceNotFoundError
     }
 
+    if (repo.accessPassword && (sub !== repo.id || !canAccess)) {
+      throw UnauthorizedError
+    }
+
     return {
-      repository,
+      repository: repo,
     }
   }
 }

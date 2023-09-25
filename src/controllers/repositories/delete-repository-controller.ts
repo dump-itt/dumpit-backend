@@ -9,7 +9,12 @@ export async function deleteRepositoryController(
 
   const useCase = new DeleteRepositoryUseCase()
 
-  await useCase.execute({ id })
+  await useCase.execute({
+    id,
+    sub: req.repo?.sub,
+    canAccess: req.repo?.canAccess,
+    canEdit: req.repo?.canEdit,
+  })
 
   return reply.status(204).send()
 }

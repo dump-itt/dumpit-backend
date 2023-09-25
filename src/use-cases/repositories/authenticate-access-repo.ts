@@ -1,38 +1,37 @@
-import bcrypt from "bcrypt";
-import { prisma } from "@/lib/prisma";
-import { AuthenticateError } from "@/errors/AppError";
-import { InvalidPassword } from "@/errors/AppError";
+import bcrypt from 'bcrypt'
+import { prisma } from '@/lib/prisma'
+import { AuthenticateError, InvalidPassword } from '@/errors/AppError'
 
 type authenticateRepoRequest = {
-  id: string;
-  password: string;
-};
+  id: string
+  password: string
+}
 
 type authenticateRepoResponse = {
-  isAuthenticate: boolean;
-};
+  isAuthenticate: boolean
+}
 
 export class AuthenticateAccessRepositoryUseCase {
   async execute({
     id,
     password,
   }: authenticateRepoRequest): Promise<authenticateRepoResponse> {
-    const repo = await prisma.repository.findUnique({ where: { id } });
+    const repo = await prisma.repository.findUnique({ where: { id } })
 
     if (!repo) {
-      throw AuthenticateError;
+      throw AuthenticateError
     }
 
-    const storedHashedPassword = repo.accessPassword;
+    const storedHashedPassword = repo.accessPassword
 
     if (storedHashedPassword === null) {
-      throw InvalidPassword;
+      throw InvalidPassword
     }
 
-    const isAuthenticate = await bcrypt.compare(password, storedHashedPassword);
+    const isAuthenticate = await bcrypt.compare(password, storedHashedPassword)
 
     return {
       isAuthenticate,
-    };
+    }
   }
 }

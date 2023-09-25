@@ -1,25 +1,18 @@
-import fastifyJwt from '@fastify/jwt'
 import fastify from 'fastify'
 import fastifyMulter from 'fastify-multer'
 import fastifyCors from '@fastify/cors'
 
 import { ZodError } from 'zod'
-import { env } from '@/env'
 import { repositoryRoutes } from './controllers/repositories/routes'
 import { multerDiskStorage } from './utils/multer-disk-storage'
 import { AppError } from './errors/AppError'
 
 export const app = fastify()
+
 export const upload = fastifyMulter({
   storage: multerDiskStorage,
 })
 
-app.register(fastifyJwt, {
-  secret: env.JWT_SECRET,
-  sign: {
-    expiresIn: '10m',
-  },
-})
 app.register(fastifyCors, {
   origin: '*',
 })
