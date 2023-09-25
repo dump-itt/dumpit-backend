@@ -8,6 +8,7 @@ import { getFileContentController } from "./get-file-content-controller";
 import { deleteFileController } from "./delete-file-controller";
 import { authenticateAccessRepositoryController } from "./authenticate-access-repository-controllers";
 import { authenticateEditRepositoryController } from "./authenticate-edit-repository-controllers";
+import { writtenTextToFileController } from './written-text-to-file-controller';
 
 export async function repositoryRoutes(app: FastifyInstance) {
   app.post("/repositories", createRepositoryController);
@@ -22,5 +23,10 @@ export async function repositoryRoutes(app: FastifyInstance) {
     url: "/repositories/:id/add",
     preHandler: upload.single("file"),
     handler: addFileToRepositoryController,
+  });
+  app.route({
+    method: 'POST',
+    url: '/repositories/:id/write',
+    handler: writtenTextToFileController,
   });
 }
