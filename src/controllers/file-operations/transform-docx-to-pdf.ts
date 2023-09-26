@@ -11,7 +11,7 @@ export async function transformDocxToPdf(
     tasks: {
       'import-my-file': {
         operation: 'import/url',
-        url: `${url}.docx`,
+        url,
       },
       'convert-my-file': {
         operation: 'convert',
@@ -25,13 +25,9 @@ export async function transformDocxToPdf(
     },
   })
 
-  const jobRes = await cloudConvert.jobs.wait(job.id) // Wait for job completion
-
-  console.log(jobRes)
+  const jobRes = await cloudConvert.jobs.wait(job.id)
 
   const file = cloudConvert.jobs.getExportUrls(jobRes)[0]
 
-  console.log(file)
-
-  return reply.status(200).send({ url: null })
+  return reply.status(200).send({ url: file.url })
 }
