@@ -28,7 +28,5 @@ export async function compressImageFromUrl(
     }
   }
 
-  console.log(data)
-
   return reply.status(200).send({ url: data.output.url })
 }

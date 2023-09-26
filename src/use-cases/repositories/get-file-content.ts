@@ -21,7 +21,7 @@ export class GetFileContentUseCase {
   async execute({
     id,
   }: GetFileContentRequest): Promise<GetFileContentResponse> {
-    const file = await prisma.file.findUnique({ where: { id } })
+    const file = await prisma.file.findFirst({ where: { name: id } })
 
     if (!file) {
       throw ResourceNotFoundError
