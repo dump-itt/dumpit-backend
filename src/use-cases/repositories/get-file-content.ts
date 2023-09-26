@@ -32,7 +32,7 @@ export class GetFileContentUseCase {
     const filePath = `${repositoryPath}/${file.name}`
 
     if (!fileExists(filePath)) {
-      await prisma.file.delete({ where: { id } })
+      await prisma.file.delete({ where: { id: file.id } })
 
       throw ResourceNotFoundError
     }
