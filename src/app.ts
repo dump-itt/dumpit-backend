@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 import { repositoryRoutes } from './controllers/repositories/routes'
 import { multerDiskStorage } from './utils/multer-disk-storage'
 import { AppError } from './errors/AppError'
+import { fileOperationsRoute } from './controllers/file-operations/routes'
 
 export const app = fastify()
 
@@ -19,6 +20,7 @@ app.register(fastifyCors, {
 
 app.register(fastifyMulter.contentParser)
 app.register(repositoryRoutes)
+app.register(fileOperationsRoute)
 
 app.setErrorHandler((error, _, reply) => {
   console.log(error)
