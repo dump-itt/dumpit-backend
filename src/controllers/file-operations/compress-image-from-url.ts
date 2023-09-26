@@ -1,3 +1,4 @@
+import { env } from '@/env'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import fetch from 'node-fetch'
 
@@ -10,9 +11,9 @@ export async function compressImageFromUrl(
   const res = await fetch('https://api.tinify.com/shrink', {
     method: 'POST',
     headers: {
-      Authorization: `Basic ${Buffer.from(
-        `z0Rt5WlmBgyM6NRBZhSFWCKQ7cgfbFJd:`,
-      ).toString('base64')}`,
+      Authorization: `Basic ${Buffer.from(`${env.TINY_API_KEY}:`).toString(
+        'base64',
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

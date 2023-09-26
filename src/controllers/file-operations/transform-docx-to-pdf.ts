@@ -27,6 +27,8 @@ export async function transformDocxToPdf(
 
   const jobRes = await cloudConvert.jobs.wait(job.id)
 
+  console.log(jobRes)
+
   const file = cloudConvert.jobs.getExportUrls(jobRes)[0]
 
   return reply.status(200).send({ url: file.url })
