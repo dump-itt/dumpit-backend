@@ -1,13 +1,16 @@
+import './jobs'
+
 import fastify from 'fastify'
 import fastifyMulter from 'fastify-multer'
 import fastifyCors from '@fastify/cors'
+import CloudConvert from 'cloudconvert'
 
 import { ZodError } from 'zod'
 import { repositoryRoutes } from './controllers/repositories/routes'
 import { multerDiskStorage } from './utils/multer-disk-storage'
 import { AppError } from './errors/AppError'
 import { fileOperationsRoute } from './controllers/file-operations/routes'
-import CloudConvert from 'cloudconvert'
+
 import { env } from './env'
 
 export const app = fastify()
